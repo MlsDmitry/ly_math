@@ -10,12 +10,14 @@ git clone https://github.com/MlsDmitry/ly_math.git
 cd ly_math
 pip3 install -r requirements
 ```
-### Recent update
-* Added slide navigation!
-
-![](/git_resources/slide_navigation.gif)
 ### Startup application
 ```
 python3 startup.py
 ```
+
+### Recent update
+* Added slide navigation!
+
+![](/git_resources/slide_navigation.gif)
+
 ![](/git_resources/main_window.png?raw=true)
