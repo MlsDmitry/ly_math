@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QComboBox, QStyledItemDelegate
 from PyQt5.QtCore import QEvent, Qt
-from PyQt5.QtGui import QPalette, QColor, QFontMetrics, QStandardItem
+from PyQt5.QtGui import QPalette, QFontMetrics, QStandardItem
 
 
 class CheckableComboBox(QComboBox):
