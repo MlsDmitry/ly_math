@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QGridLayout, QPushButton, QLineEdit, QLabel, QVBoxLayout, QCalendarWidget
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QGridLayout, QPushButton, QLineEdit, QLabel, QVBoxLayout, QCalendarWidget, QHBoxLayout
 from PyQt5.QtGui import QIntValidator
 import sys
 
-from src.custom_widgets import CheckableComboBox
+from src.custom_widgets import CheckableComboBox, StackedWidget
 from src.task import ExampleGenerator, Task
-from src.custom_widgets import StackedWidget
+from src.utils import ValidateTask
+from src.utils import Log
 
 
 class App (QMainWindow):
@@ -20,49 +21,37 @@ class App (QMainWindow):
         self.lgrid_main = QGridLayout()
         self.lpage = StackedWidget()
 
+        select_box_description = QLabel('Choose operations')
+        select_box_description.setMaximumSize(select_box_description.sizeHint())
+        self.lstack_settings.addWidget(select_box_description)
+
         type_select_box = CheckableComboBox()
         type_select_box.addItems(["+", "-", "*", "/"])
         self.lstack_settings.addWidget(type_select_box)
 
-        # Add Label "How many cols?"
-        per_row_label = QLabel("How many cols?")
-        self.lstack_settings.addWidget(per_row_label)
-        per_row_num_input = QLineEdit()
-        # Restrict input
-        validator = QIntValidator()
-        per_row_num_input.setValidator(validator)
-        self.lstack_settings.addWidget(per_row_num_input)
+        self.add_form_input("Questions count")
+        self.add_form_input("Seperate by")
+        self.add_form_input("From num")
+        self.add_form_input("To num")
 
-        # Add Label "How many rows?"
-        per_col_label = QLabel("How many rows?")
-        self.lstack_settings.addWidget(per_col_label)
-        per_col_num_input = QLineEdit()
-        # Restrict input
-        validator = QIntValidator()
-        per_col_num_input.setValidator(QIntValidator())
-        self.lstack_settings.addWidget(per_col_num_input)
 
-        # Add Label "From num: "
-        per_col_label = QLabel("From num: ")
-        self.lstack_settings.addWidget(per_col_label)
-        per_col_num_input = QLineEdit()
-        # Restrict input
-        validator = QIntValidator()
-        per_col_num_input.setValidator(QIntValidator())
-        self.lstack_settings.addWidget(per_col_num_input)
-
-        # Add Label "To num: "
-        per_col_label = QLabel("To num: ")
-        self.lstack_settings.addWidget(per_col_label)
-        per_col_num_input = QLineEdit()
-        # Restrict input
-        validator = QIntValidator()
-        per_col_num_input.setValidator(QIntValidator())
-        self.lstack_settings.addWidget(per_col_num_input)
+        # define layout for Generate & export[word, pdf] Generate & do now
+        linline_buttons = QHBoxLayout()
 
         generate_task_button = QPushButton('Generate')
         generate_task_button.clicked.connect(self.generate_task_action)
         self.lstack_settings.addWidget(generate_task_button)
+
+        export_task_button = QPushButton('Export [pdf, word]')
+        export_task_button.setDisabled(True)
+        linline_buttons.addWidget(export_task_button)
+        
+        do_now_button = QPushButton('Do now')
+        do_now_button.setDisabled(True)
+        linline_buttons.addWidget(do_now_button)
+
+
+        self.lstack_settings.addLayout(linline_buttons)
 
         page1 = QWidget()
         page1.setLayout(self.lstack_settings)
@@ -70,13 +59,14 @@ class App (QMainWindow):
 
         self.lpage.addWidget(page1)
         self.lpage.addWidget(page2)
+
         self.lgrid_main.addWidget(self.lpage, 0, 0, 1, 2) # 2 -> fill 2 columns
-        back_button = QPushButton("<")
-        back_button.clicked.connect(lambda: self.lpage.setCurrentIndex(0))
-        self.lgrid_main.addWidget(back_button, 1, 0, 1, 1) # 1 -> fill 1 column
-        forward_button = QPushButton(">")
-        forward_button.clicked.connect(lambda: self.lpage.setCurrentIndex(1))
-        self.lgrid_main.addWidget(forward_button, 1, 1, 1, 1)
+        # back_button = QPushButton("<")
+        # back_button.clicked.connect(lambda: self.lpage.setCurrentIndex(0))
+        # self.lgrid_main.addWidget(back_button, 1, 0, 1, 1) # 1 -> fill 1 column
+        # forward_button = QPushButton(">")
+        # forward_button.clicked.connect(lambda: self.lpage.setCurrentIndex(1))
+        # self.lgrid_main.addWidget(forward_button, 1, 1, 1, 1)
 
         # self.lgrid_main.addLayout(self.lstack_settings, 0, 0)
         # TODO seperate App(QMainWindow) and QWidget classes
@@ -84,23 +74,54 @@ class App (QMainWindow):
         window.setLayout(self.lgrid_main)
         self.setCentralWidget(window)
 
-    def generate_task_action(self):
-        # TODO add validation input for negative numbers
-        operations = self.lstack_settings.itemAt(0).widget().currentData()
-        if len(operations) == 0:
-            warn = QLabel("Please specify at least one operation")
-            self.lstack_settings.addWidget(warn)
-            return
-        size_of_table = int(self.lstack_settings.itemAt(2).widget().text())
-        size_of_sub_table = int(self.lstack_settings.itemAt(2).widget().text())
-        from_num = int(self.lstack_settings.itemAt(4).widget().text())
-        to_num = int(self.lstack_settings.itemAt(4).widget().text())
+    def add_form_input(self, label_text):
+        widget_description = QLabel(label_text)
+        widget_description.setMaximumSize(widget_description.sizeHint())
 
-        self.task = Task(size_of_table, size_of_sub_table)
-        ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
-        ex_generator.generate_final()
-        from pprint import pprint
-        pprint(self.task.return_field_seperated())
+        self.lstack_settings.addWidget(widget_description)
+
+        form_input = QLineEdit()
+        # Restrict input
+        validator = QIntValidator()
+        form_input.setValidator(QIntValidator())
+        self.lstack_settings.addWidget(form_input)
+
+    def display_error(self, error, row_input_pos):
+        self.lstack_settings.itemAtPosition()
+
+
+    def generate_task_action(self):
+
+        validator = ValidateTask(self.lstack_settings)
+        validator.validate()
+
+        if validator.warnings:
+            self.lstack_settings = validator.lstack_settings
+            return
+
+            # for row_num, error_lmessage in validator.warnings.items():
+            #     widget = self.lstack_settings.itemAt(row_num).widget()
+            #     Log.log('d', id(widget))
+
+
+        operations = validator.data[0]
+        # if len(operations) == 0:
+        #     warn = QLabel("Please specify at least one operation")
+        #     self.lstack_settings.addWidget(warn)
+        #     return
+        question_count = validator.data[1]
+        seperate_by_num = validator.data[2]
+        from_num = validator.data[3]
+        to_num = validator.data[4]
+
+        self.task = Task(question_count, seperate_by_num)
+        self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
+        self.ex_generator.generate_final()
+
+
+        
+        # from pprint import pprint
+        # pprint(self.task.return_field_seperated())
 
 
 
