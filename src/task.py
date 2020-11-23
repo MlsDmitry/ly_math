@@ -66,3 +66,7 @@ class ExampleGenerator:
     def iterate_field(self, func):
         for ex in self._task.get_field():
             func(ex)
+
+
+class ExportOutput:
+    pass

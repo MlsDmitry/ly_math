@@ -56,7 +56,6 @@ class ValidateTask:
     
     def validate(self):
         warnings = {}
-        operations = self.get_widget_by_id(1)
 
         for id in range(1, 10, 2):
             widget = self.get_widget_by_id(id)
@@ -72,6 +71,13 @@ class ValidateTask:
             index = int((id - 1) / 2)
             if len(data) == 0:
                 # TODO ADD WARNINGS
+                warnings[index] = self.WARNINGS[index]
+                widget.setStyleSheet("border: 1px solid red;")
+            elif index == 2 and int(self.get_widget_by_id(3).text()) < int(data):
+                # Log.log('d', f"data: {data}; widget_data: {int(self.get_widget_by_id(3).text())}; equation: {}")
+                warnings[index] = self.WARNINGS[index]
+                widget.setStyleSheet("border: 1px solid red;")
+            elif index == 4 and int(data) <= int(self.get_widget_by_id(7).text()):
                 warnings[index] = self.WARNINGS[index]
                 widget.setStyleSheet("border: 1px solid red;")
             else:
