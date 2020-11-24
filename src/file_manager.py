@@ -1,7 +1,5 @@
 import os
 
-# 
-
 def open_file(path):
     if platform.system() == "Windows":
         os.startfile(path)
