@@ -59,7 +59,7 @@ class HistoryModel:
     def get_snapshot(self, name):
         Log.log('d', f'name: {name}')
         snapshot = self.cursor.execute(f"SELECT \
-            * \
+            operations, question_count, separate_by_num, min_num, max_num \
             from history \
             where snapshot_name = '{name}'")
         return snapshot.fetchone()

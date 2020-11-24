@@ -73,8 +73,10 @@ class TestSQLite(unittest.TestCase):
         name = ''.join([choice(ascii_letters) for _ in range(randint(5, 15))])
         self.hm.add_snaptshot([name, *task.to_sqlite_format()])
         # self.hm.add_snaptshot()
-    
+
     def test_get_snapshot(self):
         ret = self.hm.get_snapshot('test1')
-        self.assertEqual(ret, (2, 'test1', '+,-', 17, 3, 10, 49))
-        Log.log('d', self.hm.get_snapshot('test1'))
+        if not(ret == ('+,-', 17, 3, 10, 49)):
+            Log.log('er', f'Not equal {ret}')
+        task = Task.from_sqlite_format(ret)
+        Log.log('d', task)

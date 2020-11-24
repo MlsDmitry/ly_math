@@ -34,8 +34,10 @@ class Task:
     def to_sqlite_format(self):
         return [','.join(self.operations), self.num_items, self.separate_by_num, self.num_range[0], self.num_range[1]]
     
-    # def from_sqlite_format(self, ):
-    #     return Task()
+    @staticmethod
+    def from_sqlite_format(sqlite_response):
+        # sqlite_response example: ('+,-', 17, 3, 10, 49)
+        return Task(sqlite_response[1], sqlite_response[2], sqlite_response[0], (sqlite_response[3], sqlite_response[4]))
         
     
 
