@@ -36,39 +36,11 @@ class App (QMainWindow):
 
 
         # define layout for Generate & export[word, pdf] Generate & do now
-        linline_buttons = QHBoxLayout()
-
         generate_task_button = QPushButton('Generate')
         generate_task_button.clicked.connect(self.generate_task_action)
         self.lstack_settings.addWidget(generate_task_button)
 
-        export_task_button = QPushButton('Export [pdf, word]')
-        export_task_button.setDisabled(True)
-        linline_buttons.addWidget(export_task_button)
-        
-        do_now_button = QPushButton('Do now')
-        do_now_button.setDisabled(True)
-        linline_buttons.addWidget(do_now_button)
-
-
-        self.lstack_settings.addLayout(linline_buttons)
-
-        page1 = QWidget()
-        page1.setLayout(self.lstack_settings)
-        page2 = QCalendarWidget()
-
-        self.lpage.addWidget(page1)
-        self.lpage.addWidget(page2)
-
-        self.lgrid_main.addWidget(self.lpage, 0, 0, 1, 2) # 2 -> fill 2 columns
-        # back_button = QPushButton("<")
-        # back_button.clicked.connect(lambda: self.lpage.setCurrentIndex(0))
-        # self.lgrid_main.addWidget(back_button, 1, 0, 1, 1) # 1 -> fill 1 column
-        # forward_button = QPushButton(">")
-        # forward_button.clicked.connect(lambda: self.lpage.setCurrentIndex(1))
-        # self.lgrid_main.addWidget(forward_button, 1, 1, 1, 1)
-
-        # self.lgrid_main.addLayout(self.lstack_settings, 0, 0)
+        self.lgrid_main.addLayout(self.lstack_settings, 0, 0, 1, 2)
         # TODO seperate App(QMainWindow) and QWidget classes
         window = QWidget()
         window.setLayout(self.lgrid_main)
