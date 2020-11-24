@@ -67,11 +67,11 @@ class ValidateTask:
         #     warn = QLabel("Please specify questions count")
         #     question_count.setStyleSheet("border: 1px solid red;")
         #     warnings[1] = warn 
-        # seperate_by_num = self.get_widget_by_id(5)
-        # Log.log('d', seperate_by_num.text())
-        # if seperate_by_num.text() == '':
+        # separate_by_num = self.get_widget_by_id(5)
+        # Log.log('d', separate_by_num.text())
+        # if separate_by_num.text() == '':
         #     warn = QLabel("Please specify rows count in tables")
-        #     seperate_by_num.setStyleSheet("border: 1px solid red;")
+        #     separate_by_num.setStyleSheet("border: 1px solid red;")
         #     warnings[2] = warn 
         # from_num = self.get_widget_by_id(7)
         # Log.log('d', from_num.text())
@@ -88,7 +88,7 @@ class ValidateTask:
         #     warnings[4] = warn 
 
         self.warnings = warnings
-        # self.task = Task(question_count, seperate_by_num)
+        # self.task = Task(question_count, separate_by_num)
         # self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
         # self.ex_generator.generate_final()
 

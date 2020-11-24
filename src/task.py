@@ -14,10 +14,14 @@ class Example:
         return self.__str__()
 
 class Task:
-    def __init__(self, num_items, seperate_by_num):
+    def __init__(self, num_items, separate_by_num, operations, num_range: tuple):
         self._field = []
         self.num_items = num_items
-        self.seperate_by_num = seperate_by_num
+        self.separate_by_num = separate_by_num
+        self.operations = operations
+        self.num_range = num_range
+
+        self.ex_generator = ExampleGenerator(self)
 
     def add_item(self, item: Example):
         if len(self._field) >= self.num_items:
@@ -26,15 +30,21 @@ class Task:
 
     def get_field(self):
         return self._field
+    
+    def to_sqlite_format(self):
+        return [','.join(self.operations), self.num_items, self.separate_by_num, self.num_range[0], self.num_range[1]]
+    
+    # def from_sqlite_format(self, ):
+    #     return Task()
         
     
 
 
 class ExampleGenerator:
-    def __init__(self, task: Task, operations, num_range: tuple):
+    def __init__(self, task: Task):
         self._task = task
-        self._operations = operations
-        self._from_num, self._to_num = num_range
+        self._operations = task.operations
+        self._from_num, self._to_num = task.num_range
 
     def generate_example(self):
         op = choice(self._operations)

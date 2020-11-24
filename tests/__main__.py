@@ -14,6 +14,7 @@ if __name__ == '__main__':
     tu.test_path()
 
     tsql = TestSQLite()
-
+    tsql.test_add_snapshot()
+    tsql.test_get_snapshot()
     # tsql
 

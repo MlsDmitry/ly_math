@@ -1,5 +1,6 @@
 import sqlite3
 from src.file_manager import app_path, documents_path
+from src.logger.logger import Log
 
 
 class DBManager:
@@ -18,8 +19,8 @@ class DBManager:
                 id INTEGER PRIMARY KEY, \
                 snapshot_name TEXT NOT NULL UNIQUE, \
                 operations TEXT NOT NULL, \
-                question_count TEXT NOT NULL, \
-                seperate_by_num INTEGER NOT NULL, \
+                question_count INTEGER NOT NULL, \
+                separate_by_num INTEGER NOT NULL, \
                 min_num INTEGER NOT NULL, \
                 max_num INTEGER NOT NULL \
                 )")
@@ -46,13 +47,24 @@ class HistoryModel:
 
     def get_snapshot_names(self):
         names = self.cursor.execute('SELECT snapshot_name from history')
-        return names.fetchone()
+        return [t[0] for t in names.fetchall()]
     
     def add_snaptshot(self, params):
+        Log.log('d', f'add_snapshot params: {params}')
         self.cursor.execute(f"INSERT into history \
-            (snapshot_name, operations, question_count, seperate_by_num, min_num, max_num)\
+            (snapshot_name, operations, question_count, separate_by_num, min_num, max_num)\
             values (?,?,?,?,?,?)", 
             params)
+    
+    def get_snapshot(self, name):
+        Log.log('d', f'name: {name}')
+        snapshot = self.cursor.execute(f"SELECT \
+            * \
+            from history \
+            where snapshot_name = '{name}'")
+        return snapshot.fetchone()
+    
+
     
     
 

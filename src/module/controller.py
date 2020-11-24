@@ -31,11 +31,11 @@ class Controller:
         #     self.lstack_settings.addWidget(warn)
         #     return
         question_count = validator.data[1]
-        seperate_by_num = validator.data[2]
+        separate_by_num = validator.data[2]
         from_num = validator.data[3]
         to_num = validator.data[4]
 
-        self.task = Task(question_count, seperate_by_num)
+        self.task = Task(question_count, separate_by_num)
         self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
         self.ex_generator.generate_final()
 

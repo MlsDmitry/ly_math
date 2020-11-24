@@ -24,7 +24,7 @@ class View(QMainWindow):
         self.lstack_settings.addWidget(type_select_box)
 
         self.qustion_count_input = self.add_form_input("Questions count")
-        self.seperate_input = self.add_form_input("Seperate by")
+        self.separate_input = self.add_form_input("separate by")
         self.min_number_input = self.add_form_input("Min number")
         self.max_number_input = self.add_form_input("Max number")
 
@@ -33,7 +33,7 @@ class View(QMainWindow):
         self.lstack_settings.addWidget(self.generate_task_button)
 
         self.lgrid_main.addLayout(self.lstack_settings, 0, 0, 1, 2)
-        # TODO seperate App(QMainWindow) and QWidget classes
+        # TODO separate App(QMainWindow) and QWidget classes
         window = QWidget()
         window.setLayout(self.lgrid_main)
         self.setCentralWidget(window)
