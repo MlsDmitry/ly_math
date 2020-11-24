@@ -1,5 +1,7 @@
 from src.task import Task, ExampleGenerator
 from src.file_manager import app_path, documents_path
+from src.providers.sqlite_provider import DBManager, HistoryModel, PreferencesModel
+from src.logger.logger import Log
 
 import unittest
 from pprint import pprint
@@ -24,3 +26,11 @@ class TestUtils(unittest.TestCase):
         print("Documents path: ", documents_path())
         return True
         
+class TestSQLite(unittest.TestCase):
+    def __init__(self):
+        db_manager = DBManager()
+        db_manager.init_tables()
+        hm = HistoryModel()
+        Log.log('d', hm.get_snapshot_names())
+        hm.add_snaptshot(('testname', '+, -', 3, 3, 4, 20))
+        Log.log('d', hm.get_snapshot_names())
