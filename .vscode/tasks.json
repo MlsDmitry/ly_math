@@ -11,8 +11,14 @@
         {
             "label": "Startup App",
             "type": "shell",
-
-            "command": "venv/bin/python3 startup.py"
+            "command": "venv/bin/python3 startup.py",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run tests",
+            "type": "shell",
+            "command": "venv/bin/python3 -m tests",
+            "problemMatcher": []
         }
     ]
 }

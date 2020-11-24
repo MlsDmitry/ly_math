@@ -1,6 +1,9 @@
-from PyQt5.QtWidgets import QLabel, QLineEdit, QVBoxLayout
-from logging import log, warning
 import coloredlogs, logging
+import os
+import platform
+import subprocess
+from PyQt5.QtWidgets import QLineEdit, QVBoxLayout
+
 from src.custom_widgets.custom import CheckableComboBox
 
 
@@ -70,7 +73,6 @@ class ValidateTask:
             Log.log('d', 'data: ', data)
             index = int((id - 1) / 2)
             if len(data) == 0:
-                # TODO ADD WARNINGS
                 warnings[index] = self.WARNINGS[index]
                 widget.setStyleSheet("border: 1px solid red;")
             elif index == 2 and int(self.get_widget_by_id(3).text()) < int(data):
@@ -81,7 +83,6 @@ class ValidateTask:
                 warnings[index] = self.WARNINGS[index]
                 widget.setStyleSheet("border: 1px solid red;")
             else:
-                # TODO delete warnings
                 if index in warnings:
                     del warnings[index]
                 widget.setStyleSheet("border: 1px solid green")
@@ -130,3 +131,5 @@ class ValidateTask:
         # self.task = Task(question_count, seperate_by_num)
         # self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
         # self.ex_generator.generate_final()
+
+
