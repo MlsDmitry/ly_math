@@ -2,6 +2,7 @@ from src.task import Task, ExampleGenerator
 from src.file_manager import app_path, documents_path
 from src.providers.sqlite_provider import DBManager, HistoryModel, PreferencesModel
 from src.logger.logger import Log
+from src.module.model import Model, Config
 
 import unittest
 from pprint import pprint
@@ -27,6 +28,19 @@ class TestUtils(unittest.TestCase):
 
     def test_path(self):
         print("Documents path: ", documents_path())
+        return True
+
+
+class TestModel(unittest.TestCase):
+    def __init__(self):
+        pass
+
+    def test_is_valid_min_max(self):
+        config = Config()
+        config.min_number = "a"
+        config.max_number = "0"
+        is_valid = Model.validate_min_max_number()
+        print("Documents path: ", is_valid)
         return True
 
 

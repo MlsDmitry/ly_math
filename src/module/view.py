@@ -1,5 +1,7 @@
 from src.custom_widgets import CheckableComboBox, StackedWidget
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QGridLayout, QPushButton, QLineEdit, QLabel, QVBoxLayout, QCalendarWidget, QHBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QGridLayout, QPushButton, QLineEdit, QLabel, \
+    QVBoxLayout, QCalendarWidget, QHBoxLayout
+
 
 class View(QMainWindow):
 
@@ -19,12 +21,12 @@ class View(QMainWindow):
         select_box_description.setMaximumSize(select_box_description.sizeHint())
         self.lstack_settings.addWidget(select_box_description)
 
-        type_select_box = CheckableComboBox()
-        type_select_box.addItems(["+", "-", "*", "/"])
-        self.lstack_settings.addWidget(type_select_box)
+        self.operation_checkbox = CheckableComboBox()
+        self.operation_checkbox.addItems(["+", "-", "*", "/"])
+        self.lstack_settings.addWidget(self.operation_checkbox)
 
-        self.qustion_count_input = self.add_form_input("Questions count")
-        self.separate_input = self.add_form_input("separate by")
+        self.expressions_count_input = self.add_form_input("Questions count")
+        self.columns_input = self.add_form_input("Columns")
         self.min_number_input = self.add_form_input("Min number")
         self.max_number_input = self.add_form_input("Max number")
 
@@ -50,3 +52,9 @@ class View(QMainWindow):
         # form_input.setValidator(QIntValidator())
         self.lstack_settings.addWidget(form_input)
         return form_input
+
+    def show_error_if_needed(self, is_valid, widget):
+        if is_valid:
+            widget.setStyleSheet("border: 1px solid green")
+        else:
+            widget.setStyleSheet("border: 1px solid red;")

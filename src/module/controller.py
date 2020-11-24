@@ -1,11 +1,14 @@
 from src.module.view import View
 from src.utils import ValidateTask
 from src.task import ExampleGenerator, Task
+from src.module.model import Config
+from src.module.model import Model
 
 
 class Controller:
     def __init__(self):
         self.view = View()
+        self.model = Model()
 
     def show_view(self):
         self.view.show()
@@ -13,31 +16,20 @@ class Controller:
 
     def generate_task_action(self):
 
-        validator = ValidateTask(self.lstack_settings)
-        validator.validate()
+        config = Config()
+        config.operations = self.view.operation_checkbox.currentData()
+        config.expressions_count = self.view.expressions_count_input.text()
+        config.columns = self.view.columns_input.text()
+        config.min_number = self.view.min_number_input.text()
+        config.max_number = self.view.max_number_input.text()
 
-        if validator.warnings:
-            self.lstack_settings = validator.lstack_settings
-            return
+        is_valid_operation_data = Model.validate_operation(config)
+        self.view.show_error_if_needed(is_valid_operation_data, self.view.operation_checkbox)
 
-            # for row_num, error_lmessage in validator.warnings.items():
-            #     widget = self.lstack_settings.itemAt(row_num).widget()
-            #     Log.log('d', id(widget))
+        is_valid_min_max_data = Model.validate_min_max_number(config)
+        self.view.show_error_if_needed(is_valid_min_max_data, self.view.min_number_input)
+        self.view.show_error_if_needed(is_valid_min_max_data, self.view.max_number_input)
 
-
-        operations = validator.data[0]
-        # if len(operations) == 0:
-        #     warn = QLabel("Please specify at least one operation")
-        #     self.lstack_settings.addWidget(warn)
-        #     return
-        question_count = validator.data[1]
-        separate_by_num = validator.data[2]
-        from_num = validator.data[3]
-        to_num = validator.data[4]
-
-        self.task = Task(question_count, separate_by_num)
-        self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
-        self.ex_generator.generate_final()
-
-    def display_error(self, error, row_input_pos):
-        self.lstack_settings.itemAtPosition()
+        # self.task = Task(question_count, seperate_by_num)
+        # self.ex_generator = ExampleGenerator(self.task, operations, (from_num, to_num))
+        # self.ex_generator.generate_final()
