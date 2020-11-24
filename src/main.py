@@ -5,7 +5,7 @@ import sys
 from src.custom_widgets import CheckableComboBox, StackedWidget
 from src.task import ExampleGenerator, Task
 from src.utils import ValidateTask
-from src.utils import Log
+from src.logger.logger import Log
 
 
 class App (QMainWindow):

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 
 from src import App
-from src.utils import Log
+from src.logger.logger import Log
 
 
 

@@ -1,11 +1,13 @@
 import os
+import subprocess
+from src.logger.logger import Log
 
 def open_file(path):
-    if platform.system() == "Windows":
+    if os.platform.system() == "Windows":
         os.startfile(path)
-    elif platform.system() == "Darwin":
+    elif os.platform.system() == "Darwin":
         subprocess.Popen(["open", path])
-    elif platform.system() == 'Linux':
+    elif os.platform.system() == 'Linux':
         subprocess.Popen(["xdg-open", path])
     
 def app_path():
@@ -13,7 +15,6 @@ def app_path():
 
 def documents_path():
     home = os.path.expanduser("~")
-    print(home)
-    documents_path = home.join('Documents')
-    
+    documents_path = os.path.join(home, 'Documents')
+    Log.log('d', 'doc path: ', documents_path)
     return documents_path
