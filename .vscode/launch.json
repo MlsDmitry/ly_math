@@ -5,18 +5,26 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
-        }
+        },
         {
             "name": "Debug project",
             "type": "python",
             "request": "launch",
             "program": "startup.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug tests",
+            "type": "python",
+            "request": "launch",
+            "module": "tests",
             "console": "integratedTerminal"
         }
     ]

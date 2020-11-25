@@ -19,8 +19,8 @@ class DBManager:
                 id INTEGER PRIMARY KEY, \
                 snapshot_name TEXT NOT NULL UNIQUE, \
                 operations TEXT NOT NULL, \
-                question_count INTEGER NOT NULL, \
-                separate_by_num INTEGER NOT NULL, \
+                expressions_count INTEGER NOT NULL, \
+                columns_num INTEGER NOT NULL, \
                 min_num INTEGER NOT NULL, \
                 max_num INTEGER NOT NULL \
                 )")
@@ -52,14 +52,14 @@ class HistoryModel:
     def add_snaptshot(self, params):
         Log.log('d', f'add_snapshot params: {params}')
         self.cursor.execute(f"INSERT into history \
-            (snapshot_name, operations, question_count, separate_by_num, min_num, max_num)\
+            (snapshot_name, operations, expressions_count, columns_num, min_num, max_num)\
             values (?,?,?,?,?,?)", 
             params)
     
     def get_snapshot(self, name):
         Log.log('d', f'name: {name}')
         snapshot = self.cursor.execute(f"SELECT \
-            operations, question_count, separate_by_num, min_num, max_num \
+            operations, expressions_count, columns_num, min_num, max_num \
             from history \
             where snapshot_name = '{name}'")
         return snapshot.fetchone()

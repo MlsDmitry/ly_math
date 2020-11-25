@@ -16,8 +16,5 @@ python3 startup.py
 ```
 
 ### Recent update
-* Added slide navigation!
-
-![](/git_resources/slide_navigation.gif)
 
 ![](/git_resources/main_window.png?raw=true)

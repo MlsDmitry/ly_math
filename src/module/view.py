@@ -1,6 +1,7 @@
 from src.custom_widgets import CheckableComboBox, StackedWidget
 from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QGridLayout, QPushButton, QLineEdit, QLabel, \
     QVBoxLayout, QCalendarWidget, QHBoxLayout
+from PyQt5.QtGui import QIntValidator
 
 
 class View(QMainWindow):
@@ -13,7 +14,7 @@ class View(QMainWindow):
         self.setUI()
 
     def setUI(self):
-        self.setGeometry(600, 800, 800, 600)
+        self.setGeometry(400, 800, 800, 400)
         self.setWindowTitle("Math Question Generator [MQG]")
         # l stand for layout -> stack settings layout
 
@@ -34,7 +35,7 @@ class View(QMainWindow):
         self.generate_task_button = QPushButton('Generate')
         self.lstack_settings.addWidget(self.generate_task_button)
 
-        self.lgrid_main.addLayout(self.lstack_settings, 0, 0, 1, 2)
+        self.lgrid_main.addLayout(self.lstack_settings, 0, 0)
         # TODO separate App(QMainWindow) and QWidget classes
         window = QWidget()
         window.setLayout(self.lgrid_main)
@@ -48,8 +49,8 @@ class View(QMainWindow):
 
         form_input = QLineEdit()
         # Restrict input
-        # validator = QIntValidator()
-        # form_input.setValidator(QIntValidator())
+        validator = QIntValidator()
+        form_input.setValidator(QIntValidator())
         self.lstack_settings.addWidget(form_input)
         return form_input
 

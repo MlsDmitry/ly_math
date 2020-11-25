@@ -1,4 +1,4 @@
-from src.task import Task, ExampleGenerator
+from src.task import Task, ExportOutput
 from src.file_manager import app_path, documents_path
 from src.providers.sqlite_provider import DBManager, HistoryModel, PreferencesModel
 from src.logger.logger import Log
@@ -27,7 +27,7 @@ class TestUtils(unittest.TestCase):
         pass
 
     def test_path(self):
-        print("Documents path: ", documents_path())
+        Log.log('d', "Documents path: ", documents_path())
         return True
 
 
@@ -36,12 +36,7 @@ class TestModel(unittest.TestCase):
         pass
 
     def test_is_valid_min_max(self):
-        config = Config()
-        config.min_number = "a"
-        config.max_number = "0"
-        is_valid = Model.validate_min_max_number()
-        print("Documents path: ", is_valid)
-        return True
+        pass
 
 
 class TestSQLite(unittest.TestCase):
@@ -64,8 +59,12 @@ class TestSQLite(unittest.TestCase):
         self.dbm.save()
         Log.log('d', self.hm.get_snapshot_names())
 
-    def sample_task(self):
-        return Task(randint(1, 10), randint(1, 10), choices(['+', '-', '*', '/']), (randint(0, 40), randint(40, 80)))
+    def sample_task(self, ex_range=None, cols_range=None):
+        if ex_range is None:
+            ex_range = randint(1, 10)
+        if cols_range is None:
+            cols_range = randint(1, 10)
+        return Task(ex_range, cols_range, choices(['+', '-', '*', '/']), (randint(0, 40), randint(40, 80)))
 
     def sample_snapshot(self, task=None):
         if not task:
@@ -80,3 +79,10 @@ class TestSQLite(unittest.TestCase):
             Log.log('er', f'Not equal {ret}')
         task = Task.from_sqlite_format(ret)
         Log.log('d', task)
+
+class TestExportOutput:
+    def test_output(self, task):
+        eo = ExportOutput(task)
+        eo.fill_table()
+        eo.save()
+        Log.log('d', 'saved')
