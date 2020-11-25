@@ -1,7 +1,6 @@
-from src.module.view import View
-from src.task import ExampleGenerator, Task
-from src.module.model import Config
-from src.module.model import Model
+from src.modules.expression.expression_view import View
+from src.modules.expression.expression_model import Config
+from src.modules.expression.expression_model import Model
 
 
 class Controller:

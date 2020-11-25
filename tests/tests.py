@@ -1,8 +1,7 @@
 from src.task import Task, ExportOutput
-from src.file_manager import app_path, documents_path
-from src.providers.sqlite_provider import DBManager, HistoryModel, PreferencesModel
+from src.file_manager import documents_path
+from src.providers.sqlite_provider import DBManager, HistoryModel
 from src.logger.logger import Log
-from src.module.model import Model, Config
 
 import unittest
 from pprint import pprint

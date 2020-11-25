@@ -40,7 +40,7 @@ class PreferencesModel:
     def write_default_path(self):
         self.cursor.execute('')
 
-class HistoryModel:
+class HistoryProvider:
     def __init__(self):
         conn = sqlite3.connect('projectmath.db')
         self.cursor = conn

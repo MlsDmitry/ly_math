@@ -1,4 +1,4 @@
-from src.module.controller import Controller
+from src.modules.expression.expression_controller import Controller
 
 class App:
     def __init__(self):
