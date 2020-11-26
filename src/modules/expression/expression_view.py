@@ -1,10 +1,9 @@
 from src.modules.expression.expression_model import Config
-from src.custom_widgets import CheckableComboBox, StackedWidget
-from PyQt5.QtWidgets import QHBoxLayout, QHeaderView, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QGridLayout, QPushButton, QLineEdit, QLabel, \
+from src.custom_widgets.custom import CheckableComboBox
+from PyQt5.QtWidgets import QHBoxLayout, QHeaderView, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QGridLayout, \
+    QPushButton, QLineEdit, QLabel, \
     QVBoxLayout, QAbstractItemView
 from PyQt5.QtGui import QIntValidator
-from PyQt5.QtCore import Qt
-
 from src.logger.logger import Log
 
 
@@ -14,7 +13,6 @@ class View(QMainWindow):
         super().__init__()
         self.lstack_settings = QVBoxLayout()
         self.lgrid_main = QGridLayout()
-        self.lpage = StackedWidget()
         self.setUI()
 
     def setUI(self):

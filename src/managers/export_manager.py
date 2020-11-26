@@ -16,7 +16,7 @@ class ExportManager:
         # create table
         self.table = document.add_table(rows=self.rows, cols=self.cols)
 
-    def fill_table(self, with_answers=False):
+    def _fill_table(self, with_answers=False):
         expression_index = 0
         
         for col_index in range(self.cols):
@@ -29,8 +29,10 @@ class ExportManager:
                 cell.text = expression.docx_format(with_answers)
                 expression_index += 1
 
-    def save(self, file_name):
+    def save(self, file_name, with_answers=False):
+        self._fill_table(with_answers)
         self.doc.add_page_break()
+
         name = open_file(documents_path() + '/' + file_name)
         Log.log('d', 'name: ', name)
         if name[0] == '':

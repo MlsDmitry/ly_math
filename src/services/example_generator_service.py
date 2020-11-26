@@ -1,13 +1,11 @@
-from src.logger.logger import Log
 from math import ceil
 from random import choice, randint
 
 from src.models.expression import ExpressionModel
-from src.models.task import TaskModel
-
+from src.logger.logger import Log
 
 class ExampleGeneratorService:
-    def __init__(self, task: TaskModel):
+    def __init__(self, task):
         self._task = task
         self._operations = task.operations
         self._from_num, self._to_num = task.num_range

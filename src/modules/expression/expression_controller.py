@@ -1,17 +1,21 @@
-from src.custom_widgets.error_dialog import ErrorDialog
+from src.managers.export_manager import ExportManager
 from PyQt5.QtWidgets import QDial, QDialog, QInputDialog
-from tests.tests import TestSQLite
+from PyQt5.QtCore import QModelIndex
+from random import choice
+from string import ascii_letters
+
 from .expression_view import View
 from .expression_model import Config
 from .expression_model import Model
 
-from random import choice
-from string import ascii_letters
 from src.models.task import TaskModel
 from src.logger.logger import Log
-from src.managers import  open_file
-from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
-from PyQt5.QtCore import QModelIndex
+
+from src.managers.db_manager import DBManager
+from src.providers.history_provider import HistoryProvider
+from src.providers.preferences_provider import PreferencesProvider
+
+from src.custom_widgets.error_dialog import ErrorDialog
 
 
 from random import randint, choices
@@ -91,7 +95,8 @@ class Controller:
         if config:
             task = TaskModel(int(config.expressions_count), int(config.columns),
                         config.operations, (int(config.min_number), int(config.max_number)))
-            task.save('Math 1.docx', with_answers)
+            em = ExportManager(task)
+            em.save('Math 1.docx', with_answers)
 
     def update_snapshot_table(self):
         Log.log('i', 'Snapshots: ', self.history_provider.get_snapshot_names())

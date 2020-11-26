@@ -1,4 +1,5 @@
 import sqlite3
+
 class PreferencesProvider:
     def __init__(self):
         conn = sqlite3.connect('projectmath.db')

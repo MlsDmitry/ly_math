@@ -1,5 +1,5 @@
 import sqlite3
-from src.managers import app_path, documents_path
+from src.managers.file_manager import app_path, documents_path
 from src.logger.logger import Log
 
 
