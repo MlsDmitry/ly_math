@@ -30,12 +30,6 @@ class Controller:
 
         self.preferences_provider = PreferencesProvider()
         self.history_provider = HistoryProvider()
-        # for _ in range(10):
-        #     task = TaskModel(randint(2, 20), randint(3, 8), choices(
-        #         ['+', '-', '*', '/'], k=3), (randint(0, 40), randint(40, 80)))
-        #     name = ''.join([choice(ascii_letters) for _ in range(10)])
-        #     self.history_provider.add_snaptshot(
-        #         [name, *task.to_sqlite_format()])
 
     def show_view(self):
         Log.log('i', 'show_view')

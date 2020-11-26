@@ -1,1 +1,1 @@
-LOG_LEVEL = 10
+LOG_LEVEL = 50
