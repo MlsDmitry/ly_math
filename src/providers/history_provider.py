@@ -5,8 +5,8 @@ from src.logger.logger import Log
 
 class HistoryProvider:
     def __init__(self):
-        conn = sqlite3.connect('projectmath.db')
-        self.cursor = conn
+        self.conn = sqlite3.connect('projectmath.db')
+        self.cursor = self.conn.cursor()
 
     def get_snapshot_names(self):
         names = self.cursor.execute('SELECT snapshot_name from history')
@@ -18,6 +18,7 @@ class HistoryProvider:
             (snapshot_name, operations, expressions_count, columns_num, min_num, max_num)\
             values (?,?,?,?,?,?)", 
             params)
+        self.conn.commit()
     
     def get_snapshot(self, name):
         Log.log('d', f'name: {name}')
@@ -30,4 +31,5 @@ class HistoryProvider:
     def delete_snapshot(self, name):
         Log.log('i', f'delete_snapshot(name): {name}')
         self.cursor.execute(f"DELETE from history where snapshot_name = '{name}'")
+        self.conn.commit()
     

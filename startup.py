@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 
-from src import App
+from src.main import App
 from src.logger.logger import Log
 
 if __name__ == '__main__':
@@ -9,6 +9,11 @@ if __name__ == '__main__':
     log = Log()
     
     qApp = QApplication(sys.argv)
+
     app = App()
-    sys.exit(qApp.exec_())
+    exit_code = qApp.exec_()
+    app.quit()
+    sys.exit(exit_code)
+
+
 

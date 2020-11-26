@@ -95,10 +95,9 @@ class View(QMainWindow):
     def add_snapshot_entry(self, name):
         Log.log('i', 'Param name: ', name)
         snapshot_item = QTableWidgetItem(name)
-
+        self.table.setRowCount(self.table.rowCount() + 1)
         row = self.table.rowCount() - 1
         self.table.setItem(row, 0, snapshot_item)
-        self.table.setRowCount(self.table.rowCount() + 1)
 
     def clear_snapshot_table(self):
         for _ in range(self.table.rowCount()):

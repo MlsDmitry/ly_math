@@ -27,16 +27,15 @@ class Controller:
         self.model = Model()
         # create db/tables before working with them
         self.dbm = DBManager()
-        self.dbm.init_tables()
 
         self.preferences_provider = PreferencesProvider()
         self.history_provider = HistoryProvider()
-        for _ in range(10):
-            task = TaskModel(randint(2, 20), randint(3, 8), choices(
-                ['+', '-', '*', '/'], k=3), (randint(0, 40), randint(40, 80)))
-            name = ''.join([choice(ascii_letters) for _ in range(10)])
-            self.history_provider.add_snaptshot(
-                [name, *task.to_sqlite_format()])
+        # for _ in range(10):
+        #     task = TaskModel(randint(2, 20), randint(3, 8), choices(
+        #         ['+', '-', '*', '/'], k=3), (randint(0, 40), randint(40, 80)))
+        #     name = ''.join([choice(ascii_letters) for _ in range(10)])
+        #     self.history_provider.add_snaptshot(
+        #         [name, *task.to_sqlite_format()])
 
     def show_view(self):
         Log.log('i', 'show_view')
@@ -47,10 +46,10 @@ class Controller:
         self.view.generate_task_with_answers_button.clicked.connect(
             lambda: self.generate_task_action(True))
 
-        self.update_snapshot_table()
         self.view.table.clicked.connect(self.snapshot_entry_clicked)
         self.view.save_snapshot_button.clicked.connect(self.save_snapshot)
         self.view.delete_snapshot_button.clicked.connect(self.delete_snapshot)
+        self.update_snapshot_table()
 
     def validate_task_config(self):
         config = Config()
@@ -127,11 +126,16 @@ class Controller:
         name, is_pressed = QInputDialog.getText(
             self.view, "Save Snapshot", "Enter name")
         if is_pressed:
+            if self.history_provider.get_snapshot(name):
+                dialog = ErrorDialog(self.view)
+                dialog.exec_()
+                return
             task = TaskModel(int(config.expressions_count), int(config.columns),
                         config.operations, (int(config.min_number), int(config.max_number)))
             self.history_provider.add_snaptshot(
                 [name, *task.to_sqlite_format()])
             self.view.add_snapshot_entry(name)
+            self.dbm.save()
         else:
             return
 
@@ -143,6 +147,7 @@ class Controller:
             if self.history_provider.get_snapshot(name):
                 self.history_provider.delete_snapshot(name)
                 self.update_snapshot_table()
+                self.dbm.save()
             else:
                 dialog = ErrorDialog(self.view)
                 dialog.exec_()
