@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     tfm = TestFileManager()
     tfm.test_path()
-    tfm.test_open_file()
+    # tfm.test_open_file()
 
     tsql = TestSQLite()
     tsql.test_add_snapshot()
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     # test_model.test_is_valid_min_max()
 
     # Docx Generation
-    eo = TestExportOutput()
+    eo = TestExportManager()
     # for _ in range(10):
     task = tsql.sample_TaskModel(randint(30, 40), randint(10, 30))
     # task = TaskModel(14, 4, ['+', '-'], (1, 100))

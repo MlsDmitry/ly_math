@@ -1,1 +1,1 @@
-from .tests import TestTaskModel, TestFileManager, TestSQLite, TestExportOutput
+from .tests import TestTaskModel, TestFileManager, TestSQLite, TestExportManager
