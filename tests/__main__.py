@@ -5,8 +5,8 @@ if __name__ == '__main__':
     log = Log()
 
 
-    tt = TestTask()
-    tt.test_task()
+    tt = TestTaskModel()
+    tt.test_TaskModel()
 
     tfm = TestFileManager()
     tfm.test_path()
@@ -23,8 +23,8 @@ if __name__ == '__main__':
     # Docx Generation
     eo = TestExportOutput()
     # for _ in range(10):
-    task = tsql.sample_task(randint(30, 40), randint(10, 30))
-    # task = Task(14, 4, ['+', '-'], (1, 100))
+    task = tsql.sample_TaskModel(randint(30, 40), randint(10, 30))
+    # task = TaskModel(14, 4, ['+', '-'], (1, 100))
     task.ex_generator.generate_final()
     eo.test_output(task)
 

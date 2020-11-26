@@ -9,7 +9,7 @@ from random import choice
 from string import ascii_letters
 from src.task import Task
 from src.logger.logger import Log
-from src.file_manager import open_file
+from src.managers import  open_file
 from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from PyQt5.QtCore import QModelIndex
 
@@ -28,7 +28,7 @@ class Controller:
         self.preferences_provider = PreferencesProvider()
         self.history_provider = HistoryProvider()
         for _ in range(10):
-            task = Task(randint(2, 20), randint(3, 8), choices(
+            task = TaskModel(randint(2, 20), randint(3, 8), choices(
                 ['+', '-', '*', '/'], k=3), (randint(0, 40), randint(40, 80)))
             name = ''.join([choice(ascii_letters) for _ in range(10)])
             self.history_provider.add_snaptshot(
@@ -89,7 +89,7 @@ class Controller:
         config = self.validate_task_config()
         Log.log('i', 'with answers: ', with_answers)
         if config:
-            task = Task(int(config.expressions_count), int(config.columns),
+            task = TaskModel(int(config.expressions_count), int(config.columns),
                         config.operations, (int(config.min_number), int(config.max_number)))
             task.save('Math 1.docx', with_answers)
 
@@ -122,7 +122,7 @@ class Controller:
         name, is_pressed = QInputDialog.getText(
             self.view, "Save Snapshot", "Enter name")
         if is_pressed:
-            task = Task(int(config.expressions_count), int(config.columns),
+            task = TaskModel(int(config.expressions_count), int(config.columns),
                         config.operations, (int(config.min_number), int(config.max_number)))
             self.history_provider.add_snaptshot(
                 [name, *task.to_sqlite_format()])

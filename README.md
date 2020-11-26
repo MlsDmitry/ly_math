@@ -4,6 +4,8 @@ Lyceum Yandex Math project
 
 * python 3.x.x (tested on 3.7.9)
 
+### Debug mode
+```src/```
 ### Installation
 ```
 git clone https://github.com/MlsDmitry/ly_math.git

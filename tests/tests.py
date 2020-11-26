@@ -1,5 +1,5 @@
 from src.task import Task, ExportOutput
-from src.file_manager import documents_path, open_file
+from src.managers import  documents_path, open_file
 from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from src.logger.logger import Log
 
@@ -9,14 +9,14 @@ from random import randint, choices, choice
 from string import ascii_letters
 
 
-class TestTask(unittest.TestCase):
+class TestTaskModel(unittest.TestCase):
     def __init__(self):
-        self.task = Task(17, 3, ['+', '-'], (10, 49))
-        # self.ex_generator = ExampleGenerator(self.task, ['+', '-'], (10, 49))
+        self.task = TaskModel(17, 3, ['+', '-'], (10, 49))
+        # self.ex_generator = ExampleGeneratorServiceself.task, ['+', '-'], (10, 49))
         # self.ex_generator.generate_final()
         self.task.ex_generator.generate_final()
 
-    def test_task(self):
+    def test_TaskModel(self):
         pprint(self.task._field)
         return True
 
@@ -58,7 +58,7 @@ class TestSQLite(unittest.TestCase):
         Log.log('d', hm.get_snapshot_names())
 
     def test_add_snapshot(self):
-        task = Task(17, 3, ['+', '-'], (10, 49))
+        task = TaskModel(17, 3, ['+', '-'], (10, 49))
         Log.log('d', f'Test format: {task.to_sqlite_format()}')
         # name = ''.join([choice(ascii_letters) for _ in range(randint(5, 15))])
         name = 'test1'
@@ -66,16 +66,16 @@ class TestSQLite(unittest.TestCase):
         # self.dbm.save()
         Log.log('d', self.hm.get_snapshot_names())
 
-    def sample_task(self, ex_range=None, cols_range=None):
+    def sample_TaskModel(self, ex_range=None, cols_range=None):
         if ex_range is None:
             ex_range = randint(1, 10)
         if cols_range is None:
             cols_range = randint(1, 10)
-        return Task(ex_range, cols_range, choices(['+', '-', '*', '/']), (randint(0, 40), randint(40, 80)))
+        return TaskModel(ex_range, cols_range, choices(['+', '-', '*', '/']), (randint(0, 40), randint(40, 80)))
 
     def sample_snapshot(self, task=None):
         if not task:
-            task = self.sample_task()
+            task = self.sample_TaskModel()
         name = ''.join([choice(ascii_letters) for _ in range(randint(5, 15))])
         self.hm.add_snaptshot([name, *task.to_sqlite_format()])
         # self.hm.add_snaptshot()
@@ -89,7 +89,7 @@ class TestSQLite(unittest.TestCase):
 
 class TestExportOutput:
     def test_output(self, task):
-        eo = ExportOutput(task)
+        eo = ExportOutputManager(task)
         eo.fill_table()
         eo.save()
         Log.log('d', 'saved')
