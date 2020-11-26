@@ -17,4 +17,5 @@ python3 startup.py
 
 ### Recent update
 
+![](/git_resources/save_dialog.png?raw=true)
 ![](/git_resources/main_window.png?raw=true)

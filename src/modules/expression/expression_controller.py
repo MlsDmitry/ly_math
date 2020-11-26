@@ -10,7 +10,7 @@ from string import ascii_letters
 from src.task import Task
 from src.logger.logger import Log
 from src.file_manager import open_file
-from src.providers.sqlite_provider import HistoryProvider, PreferencesProvider
+from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from PyQt5.QtCore import QModelIndex
 
 
@@ -21,6 +21,10 @@ class Controller:
     def __init__(self):
         self.view = View()
         self.model = Model()
+        # create db/tables before working with them
+        self.dbm = DBManager()
+        self.dbm.init_tables()
+
         self.preferences_provider = PreferencesProvider()
         self.history_provider = HistoryProvider()
         for _ in range(10):
