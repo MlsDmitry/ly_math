@@ -1,7 +1,7 @@
 from src.logger.logger import Log
 from math import ceil
 from random import choice, randint
-from src.task import Task
+from src.models import TaskModel
 
 
 class ExampleGeneratorService:

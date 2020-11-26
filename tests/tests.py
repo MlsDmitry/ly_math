@@ -1,4 +1,4 @@
-from src.task import Task, ExportOutput
+from src.models import TaskModel, ExportOutput
 from src.managers import  documents_path, open_file
 from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from src.logger.logger import Log

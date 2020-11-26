@@ -4,5 +4,3 @@ venv/
 .DS_Store
 .idea
 .db-jornal
-.db
-venv_old/
