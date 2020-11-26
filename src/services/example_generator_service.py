@@ -1,7 +1,9 @@
 from src.logger.logger import Log
 from math import ceil
 from random import choice, randint
-from src.models import TaskModel
+
+from src.models.expression import ExpressionModel
+from src.models.task import TaskModel
 
 
 class ExampleGeneratorService:
@@ -18,7 +20,7 @@ class ExampleGeneratorService:
             Log.log('d', "data: ", a, op, b)
             ret = eval(str(a) + op + str(b))
             Log.log('d', ret)
-            ex = Expression(a, op, b, result=ret)
+            ex = ExpressionModel(a, op, b, result=ret)
             return ex
         except Exception:
             return Exception

@@ -1,5 +1,6 @@
+from src.models.expression import ExpressionModel
 from src.services.example_generator_service import ExampleGeneratorService
-from . import Expression
+
 
 class TaskModel:
     def __init__(self, expressions_count, columns_num, operations, num_range: tuple):
@@ -9,10 +10,10 @@ class TaskModel:
         self.operations = operations
         self.num_range = num_range
 
-        self.ex_generator = ExampleGeneratorService()
+        self.ex_generator = ExampleGeneratorService(self)
         self.ex_generator.generate_final()
 
-    def add_item(self, item: Expression):
+    def add_item(self, item: ExpressionModel):
         if len(self._field) >= self.expressions_count:
             return IndexError
         self._field.append(item)

@@ -1,4 +1,4 @@
-from src.models import TaskModel, ExportOutput
+from src.models.task import TaskModel, ExportOutput
 from src.managers import  documents_path, open_file
 from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from src.logger.logger import Log
@@ -89,7 +89,7 @@ class TestSQLite(unittest.TestCase):
 
 class TestExportOutput:
     def test_output(self, task):
-        eo = ExportOutputManager(task)
+        eo = ExportManager(task)
         eo.fill_table()
         eo.save()
         Log.log('d', 'saved')

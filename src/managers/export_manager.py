@@ -1,12 +1,12 @@
 from docx import Document
 from src.logger.logger import Log
-from src.models import TaskModel
+from src.models.task import TaskModel
 from math import ceil
 from src.managers.file_manager import open_file, documents_path
 
 
 
-class ExportOutputManager:
+class ExportManager:
     def __init__(self, task: TaskModel):
         self.task = task
         document = Document()

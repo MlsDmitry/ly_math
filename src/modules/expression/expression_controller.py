@@ -7,7 +7,7 @@ from .expression_model import Model
 
 from random import choice
 from string import ascii_letters
-from src.models import TaskModel
+from src.models.task import TaskModel
 from src.logger.logger import Log
 from src.managers import  open_file
 from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
