@@ -120,3 +120,10 @@ class CheckableComboBox(QComboBox):
             if self.model().item(i).checkState() == Qt.Checked:
                 res.append(self.model().item(i).data())
         return res
+
+    def set_checked(self, values):
+        from src.logger.logger import Log
+        for i in range(self.model().rowCount()):
+            item = self.model().item(i)
+            Log.log('i', 'Operations item data: ', item.data())
+            item.setCheckState(Qt.Checked if item.data() in values else Qt.Unchecked)

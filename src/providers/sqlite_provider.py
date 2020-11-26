@@ -3,6 +3,7 @@ from src.file_manager import app_path, documents_path
 from src.logger.logger import Log
 
 
+
 class DBManager:
     def __init__(self):
         self.conn = sqlite3.connect('projectmath.db')
@@ -11,8 +12,7 @@ class DBManager:
     def init_tables(self):
         self.cursor.execute(
             f"CREATE table if not exists preferences ( \
-                default_path TEXT default '{documents_path()}' \
-                \
+                default_path TEXT DEFAULT '{documents_path()}' \
                 )")
         self.cursor.execute(
             f"CREATE table if not exists history ( \
@@ -32,13 +32,19 @@ class DBManager:
         self.conn.close()
 
 
-class PreferencesModel:
+class PreferencesProvider:
     def __init__(self):
         conn = sqlite3.connect('projectmath.db')
         self.cursor = conn
 
-    def write_default_path(self):
-        self.cursor.execute('')
+    def write_default_path(self, path):
+        self.cursor.execute(f'INSERT into preferences (default_path) values ("{path}")')
+    
+    def get_path(self):
+        path = self.cursor.execute('SELECT * FROM preferences')
+        # Log.log('d', path.fetchone())
+        return path.fetchone()[0]
+    
 
 class HistoryProvider:
     def __init__(self):
@@ -63,6 +69,10 @@ class HistoryProvider:
             from history \
             where snapshot_name = '{name}'")
         return snapshot.fetchone()
+    
+    def delete_snapshot(self, name):
+        Log.log('i', f'delete_snapshot(name): {name}')
+        self.cursor.execute(f"DELETE from history where snapshot_name = '{name}'")
     
 
     

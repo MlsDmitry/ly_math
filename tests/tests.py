@@ -1,6 +1,6 @@
 from src.task import Task, ExportOutput
-from src.file_manager import documents_path
-from src.providers.sqlite_provider import DBManager, HistoryModel
+from src.file_manager import documents_path, open_file
+from src.providers.sqlite_provider import DBManager, HistoryProvider, PreferencesProvider
 from src.logger.logger import Log
 
 import unittest
@@ -21,13 +21,21 @@ class TestTask(unittest.TestCase):
         return True
 
 
-class TestUtils(unittest.TestCase):
+class TestFileManager(unittest.TestCase):
     def __init__(self):
-        pass
+        db_manager = DBManager()
+        self.dbm = db_manager
+        db_manager.init_tables()
+        self.preferences_provider = PreferencesProvider()
 
     def test_path(self):
         Log.log('d', "Documents path: ", documents_path())
-        return True
+        self.dbm.save()
+        
+    def test_open_file(self):
+        self.preferences_provider.write_default_path('/Users/mlsdmitry/Documents')
+        path = self.preferences_provider.get_path()
+        open_file(path + 'test.txt')
 
 
 class TestModel(unittest.TestCase):
@@ -40,10 +48,10 @@ class TestModel(unittest.TestCase):
 
 class TestSQLite(unittest.TestCase):
     def __init__(self):
-        db_manager = DBManager()
-        self.dbm = db_manager
-        db_manager.init_tables()
-        hm = HistoryModel()
+        # db_manager = DBManager()
+        # self.dbm = db_manager
+        # db_manager.init_tables()
+        hm = HistoryProvider()
         self.hm = hm
         Log.log('d', hm.get_snapshot_names())
         hm.add_snaptshot(('testname', '+, -', 3, 3, 4, 20))
@@ -55,7 +63,7 @@ class TestSQLite(unittest.TestCase):
         # name = ''.join([choice(ascii_letters) for _ in range(randint(5, 15))])
         name = 'test1'
         self.hm.add_snaptshot([name, *task.to_sqlite_format()])
-        self.dbm.save()
+        # self.dbm.save()
         Log.log('d', self.hm.get_snapshot_names())
 
     def sample_task(self, ex_range=None, cols_range=None):

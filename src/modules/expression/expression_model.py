@@ -25,3 +25,4 @@ class Model:
 
     def validate_columns(config):
         return len(config.columns) > 0
+    

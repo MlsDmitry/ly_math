@@ -3,6 +3,8 @@ from src.logger.logger import Log
 from math import ceil
 from random import choice, randint
 
+from src.file_manager import open_file, documents_path
+
 
 class Example:
     def __init__(self, *args, result):
@@ -11,9 +13,7 @@ class Example:
         self._result = result
     
     def docx_format(self, with_answer=False):
-        if not with_answer:
-            with_answer = ' '
-        params = ' '.join(map(str, self._params)) + ' =  '
+        params = ' '.join(map(str, self._params)) + ' = ' + str(self._result) if with_answer else ' '
         return params
 
     def __str__(self):
@@ -32,6 +32,7 @@ class Task:
         self.num_range = num_range
 
         self.ex_generator = ExampleGenerator(self)
+        self.ex_generator.generate_final()
 
     def add_item(self, item: Example):
         if len(self._field) >= self.expressions_count:
@@ -52,6 +53,11 @@ class Task:
     def iterate_field(self):
         for ex in self._field:
             yield ex
+    
+    def save(self, file_name, with_answers=False):
+        eo = ExportOutput(self)
+        eo.fill_table(with_answers)
+        eo.save(file_name)
 
 
 class ExampleGenerator:
@@ -98,7 +104,7 @@ class ExportOutput:
         # create table
         self.table = document.add_table(rows=self.rows, cols=self.cols)
 
-    def fill_table(self):
+    def fill_table(self, with_answers=False):
         expression_index = 0
         
         for col_index in range(self.cols):
@@ -108,9 +114,13 @@ class ExportOutput:
                 cell = self.table.rows[row_index].cells[col_index]
                 expression = self.task.get_field()[expression_index]
                 Log.log('d', 'Expression: ', expression.docx_format())
-                cell.text = expression.docx_format()
+                cell.text = expression.docx_format(with_answers)
                 expression_index += 1
 
-    def save(self):
+    def save(self, file_name):
         self.doc.add_page_break()
-        self.doc.save('test.docx')
+        name = open_file(documents_path() + '/' + file_name)
+        Log.log('d', 'name: ', name)
+        if name[0] == '':
+            return
+        self.doc.save(name[0])

@@ -8,8 +8,9 @@ if __name__ == '__main__':
     tt = TestTask()
     tt.test_task()
 
-    tu = TestUtils()
-    tu.test_path()
+    tfm = TestFileManager()
+    tfm.test_path()
+    tfm.test_open_file()
 
     tsql = TestSQLite()
     tsql.test_add_snapshot()

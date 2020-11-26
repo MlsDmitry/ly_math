@@ -1,14 +1,12 @@
 import os
+import platform
 import subprocess
 from src.logger.logger import Log
+from PyQt5.QtWidgets import QFileDialog, QDialog
+
 
 def open_file(path):
-    if os.platform.system() == "Windows":
-        os.startfile(path)
-    elif os.platform.system() == "Darwin":
-        subprocess.Popen(["open", path])
-    elif os.platform.system() == 'Linux':
-        subprocess.Popen(["xdg-open", path])
+    return QFileDialog.getSaveFileName(None, 'Save File', path)
     
 def app_path():
     return os.path.dirname(os.path.abspath(__file__))

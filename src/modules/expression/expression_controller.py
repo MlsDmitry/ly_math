@@ -1,20 +1,50 @@
-from src.modules.expression.expression_view import View
-from src.modules.expression.expression_model import Config
-from src.modules.expression.expression_model import Model
+from src.custom_widgets.error_dialog import ErrorDialog
+from PyQt5.QtWidgets import QDial, QDialog, QInputDialog
+from tests.tests import TestSQLite
+from .expression_view import View
+from .expression_model import Config
+from .expression_model import Model
+
+from random import choice
+from string import ascii_letters
+from src.task import Task
+from src.logger.logger import Log
+from src.file_manager import open_file
+from src.providers.sqlite_provider import HistoryProvider, PreferencesProvider
+from PyQt5.QtCore import QModelIndex
+
+
+from random import randint, choices
 
 
 class Controller:
     def __init__(self):
         self.view = View()
         self.model = Model()
+        self.preferences_provider = PreferencesProvider()
+        self.history_provider = HistoryProvider()
+        for _ in range(10):
+            task = Task(randint(2, 20), randint(3, 8), choices(
+                ['+', '-', '*', '/'], k=3), (randint(0, 40), randint(40, 80)))
+            name = ''.join([choice(ascii_letters) for _ in range(10)])
+            self.history_provider.add_snaptshot(
+                [name, *task.to_sqlite_format()])
 
     def show_view(self):
+        Log.log('i', 'show_view')
         self.view.show()
         self.view.generate_task_button.clicked.connect(
             self.generate_task_action)
 
-    def generate_task_action(self):
+        self.view.generate_task_with_answers_button.clicked.connect(
+            lambda: self.generate_task_action(True))
 
+        self.update_snapshot_table()
+        self.view.table.clicked.connect(self.snapshot_entry_clicked)
+        self.view.save_snapshot_button.clicked.connect(self.save_snapshot)
+        self.view.delete_snapshot_button.clicked.connect(self.delete_snapshot)
+
+    def validate_task_config(self):
         config = Config()
         config.operations = self.view.operation_checkbox.currentData()
         config.expressions_count = self.view.expressions_count_input.text()
@@ -41,10 +71,71 @@ class Controller:
         )
         if all(
             (
-            is_valid_operation_data,
-            is_valid_min_max_data,
-            is_valid_expressions_count,
-            is_valid_columns_num
+                is_valid_operation_data,
+                is_valid_min_max_data,
+                is_valid_expressions_count,
+                is_valid_columns_num
             )
         ):
+            return config
+        else:
+            return False
+
+    def generate_task_action(self, with_answers=False):
+        config = self.validate_task_config()
+        Log.log('i', 'with answers: ', with_answers)
+        if config:
+            task = Task(int(config.expressions_count), int(config.columns),
+                        config.operations, (int(config.min_number), int(config.max_number)))
+            task.save('Math 1.docx', with_answers)
+
+    def update_snapshot_table(self):
+        Log.log('i', 'Snapshots: ', self.history_provider.get_snapshot_names())
+        self.view.clear_snapshot_table()
+        for name in self.history_provider.get_snapshot_names():
+            self.view.add_snapshot_entry(name)
+
+    # @pyqtSlot(QModelIndex)
+    def snapshot_entry_clicked(self, index: QModelIndex):
+        config = Config()
+        Log.log('i', 'Clicked snaphost entry')
+        snapshot = self.history_provider.get_snapshot(index.data())
+        Log.log('i', 'Snapshot name: ', index.data())
+        if not snapshot:
+            return
+        config.operations = snapshot[0]
+        config.expressions_count = snapshot[1]
+        config.columns = snapshot[2]
+        config.min_number = snapshot[3]
+        config.max_number = snapshot[4]
+        self.view.load_snapshot(config)
+
+    def save_snapshot(self):
+        config = self.validate_task_config()
+        if not config:
+            return
+
+        name, is_pressed = QInputDialog.getText(
+            self.view, "Save Snapshot", "Enter name")
+        if is_pressed:
+            task = Task(int(config.expressions_count), int(config.columns),
+                        config.operations, (int(config.min_number), int(config.max_number)))
+            self.history_provider.add_snaptshot(
+                [name, *task.to_sqlite_format()])
+            self.view.add_snapshot_entry(name)
+        else:
+            return
+
+    def delete_snapshot(self):
+        name, is_pressed = QInputDialog.getText(
+            self.view, "Delete Snapshot", "Enter name")
+        if is_pressed:
+            Log.log('d', self.history_provider.get_snapshot(name))
+            if self.history_provider.get_snapshot(name):
+                self.history_provider.delete_snapshot(name)
+                self.update_snapshot_table()
+            else:
+                dialog = ErrorDialog(self.view)
+                dialog.exec_()
+        else:
             return
