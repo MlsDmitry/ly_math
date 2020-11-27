@@ -61,7 +61,10 @@ modules/expression | major module, ```QMainWindow``` is there
 providers | work with database, save/delete snapshots, get default user path (ex: /Users/user1/Documents)
 services | uncategorized stuff
 services/example_generator_service | math problems generator, saves expressions to _field in TaskModel
-
+### Run tests
+```
+python3 -m tests
+```
 ### Recent update
 
 
